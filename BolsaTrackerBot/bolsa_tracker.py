@@ -49,11 +49,13 @@ def main(logger):
 
 if __name__ == '__main__':
 
-    logger = logging.getLogger('Main')
+    log_level = logging.DEBUG
+    #logger = logging.basicConfig(level=log_level)
+    logger = logging.getLogger(__name__)
     hdlr = logging.FileHandler('logs/bolsatracker.log')
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     hdlr.setFormatter(formatter)
     logger.addHandler(hdlr)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(log_level)
 
     main(logger)

@@ -1,0 +1,9 @@
+[Core]
+Name = Check Plugin
+Module = Check
+
+[Documentation]
+Author = rvicens
+Version = 0.1
+Website = http://lotsofplugins.com
+Description = Chek Plugin
