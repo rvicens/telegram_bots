@@ -1,0 +1,15 @@
+
+
+1. Install the following packages
+
+python-virtualenv 
+python-pip 
+libxml2 
+libxml2-dev 
+python-dev 
+libxslt1-dev 
+
+2. Execute the 'install/setup_env.sh' script to setup the environment
+
+./install/setup_env.sh 
+
