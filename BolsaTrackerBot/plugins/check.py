@@ -18,4 +18,5 @@ class Check(IPlugin):
         companies = self.getCompanies(msg)
         y = yahooAPI()
         results = y.getQuote(companies)
+        results += y.getChart(companies)
         return results
