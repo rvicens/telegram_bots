@@ -61,7 +61,8 @@ class TelegramMessageProcessor():
             else:
                 if pluginInfo.plugin_object.command == self.cmd:
                     self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
-                    out_message = pluginInfo.plugin_object.run(self.msg)
+                    msg = self.msg.replace(self.cmd,"")
+                    out_message = pluginInfo.plugin_object.run(msg)
 
         return out_message
 
