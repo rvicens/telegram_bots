@@ -6,47 +6,70 @@ class yahooAPI():
         self.host = "download.finance.yahoo.com"
         self.path = "/d/quotes.csv"
         self.filter = "nsl1op"
-
         self.chartHost = "chart.finance.yahoo.com"
         self.chartPath ="/z"
+
+        self.companies = {"ABERTIS":"ABE.MC","ABENGOA-A":"ABG.MC","ABENGOA-B":"ABG-P.MC","ACS":"ACS.MC","ACERINOX":"ACX.MC",
+                          "AENA":"AENA.MC","AMADEUS IT":"AMS.MC","BBVA":"BBVA.MC","BANKIA":"BKIA.MC","BANKINTER":"BKT.MC","CAIXABANK":"CABK.MC",
+                          "DIA":"DIA.MC","ENDESA":"ELE.MC","ENAGAS":"ENG.MC","FCC":"FCC.MC","FERROVIAL":"FER.MC","GAMESA":"GAM.MC","GAS NATURAL":"GAS.MC",
+                          "GRIFOLS":"GRF.MC","IAG":"IAG.MC","IBERDROLA":"IBE.MC","INDRA":"IDR.MC","INDITEX":"ITX.MC","MAPFRE":"MAP.MC","ACELORMITTAL":"MTS.MC",
+                          "OHL":"OHL.MC","POPULAR":"POP.MC","REE":"REE.MC","REPSOL":"REP.MC","B.SABADELL":"SAB.MC","SANTANDER":"SAN.MC","SACYR":"SACYR.MC",
+                          "TELEFONICA":"TEF.MC", "MEDIASET":"TL5.MC","TEC. REUNIDAS":"TRE.MC"}
 
     def setYahooFilter(self,new_filter):
         if new_filter:
             self.filter = str(new_filter)
 
 
-    def setYahooIds(self,yahoo_ids):
-        stockIndex = ""
-        for yahoo_id in yahoo_ids:
-            stockIndex += yahoo_id + ","
-        stockIndex = stockIndex[:-1]
-        return stockIndex
+    def setYahooId(self,company):
+        yahoo_id = company.upper()
+        if self.companies.has_key(company.upper()):
+            yahoo_id = self.companies[company.upper()]
 
-    def getQuote(self,yahoo_ids):
+        return yahoo_id
 
-        stockIndex = self.setYahooIds(yahoo_ids)
+
+    def getQuote(self,company):
+
+        stockIndex = self.setYahooId(company)
         url = "{0}{1}{2}".format(self.proto,self.host,self.path)
 
         payload = {'f':self.filter, 'e':'.csv', 's':stockIndex }
-        r = requests.get(url, verify=False, timeout=60, params=payload)
-        resp = r.text
-        out = "Company Name,Symbol, Last Trade Price, Min. Price, Max. Price\n"
-        out += resp
+        try:
+            r = requests.get(url, verify=False, timeout=60, params=payload)
+            resp = r.text
+
+            s = resp.split(",")
+            if len(s)<= 0:
+                out = resp
+                return out
+
+            out = "Company Name:{0}\nSymbol:{1}\nLast Trade Price:{2}\nMin. Price:{3}\nMax. Price:{4}\n".format(s[0].replace('"',''),s[1].replace('"',''),s[2],s[3],s[4])
+
+        except:
+            out = "Something went wrong querying the stock database"
 
         return out
 
-    def getChart(self,yahoo_ids):
+    def getChart(self,company):
 
-        stockIndex = self.setYahooIds(yahoo_ids)
+        stockIndex = self.setYahooId(company)
         time_frame = "5d"
-        payload = {'s': stockIndex, 't': time_frame }
-        url = "{0}{1}{2}".format(self.proto,self.chartHost,self.chartPath)
+        url = "{0}{1}{2}?s={3}&t={4}".format(self.proto,self.chartHost,self.chartPath,stockIndex,time_frame)
 
-        return "http://chart.finance.yahoo.com/z?s="+stockIndex+"&t=5d"
+        return url
+
+    def getComapanyQuote(self,companies):
+        out = ""
+        for company in companies:
+            out += self.getQuote(company)
+            out += self.getChart(company)
+            out += "\n\n"
+
+        return out
 
 if __name__ == '__main__':
 
-    companies = ["GOOG","MSFT"]
+    companies = ["MSFT","bankia"]
     y = yahooAPI()
-    print y.getQuote(companies)
-    print y.getChart(companies)
+    print y.getComapanyQuote(companies)

@@ -17,6 +17,6 @@ class Check(IPlugin):
     def run(self,msg):
         companies = self.getCompanies(msg)
         y = yahooAPI()
-        results = y.getQuote(companies)
-        results += y.getChart(companies)
+        results = y.getComapanyQuote(companies)
+
         return results
