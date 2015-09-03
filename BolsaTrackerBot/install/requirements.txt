@@ -1,3 +1,5 @@
 python-telegram-bot
 requests
 yapsy
+html5lib
+beautifulsoup4

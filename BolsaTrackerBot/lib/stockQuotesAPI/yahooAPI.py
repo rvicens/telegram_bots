@@ -1,7 +1,10 @@
 import requests
 
 class yahooAPI():
+
+
     def __init__(self):
+
         self.proto = "http://"
         self.host = "download.finance.yahoo.com"
         self.path = "/d/quotes.csv"
@@ -59,12 +62,24 @@ class yahooAPI():
 
         return url
 
+
+    def validateCompany(self,company):
+
+        if not company.upper() in self.companies.keys():
+            return False
+
+        return True
+
     def getComapanyQuote(self,companies):
+
         out = ""
         for company in companies:
-            out += self.getQuote(company)
-            out += self.getChart(company)
-            out += "\n\n"
+            if self.validateCompany(company):
+                out += self.getQuote(company)
+                out += self.getChart(company)
+                out += "\n\n"
+            else:
+                out += "Company '{0}' does not exist. Please verify companies with /list \n\n".format(company)
 
         return out
 

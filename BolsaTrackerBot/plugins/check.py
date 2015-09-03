@@ -1,5 +1,5 @@
 from yapsy.IPlugin import IPlugin
-from lib.stockQuotesAPI.yahooAPI import *
+from lib.stockQuotesAPI.bolsaMadridSearch import *
 
 class Check(IPlugin):
 
@@ -16,7 +16,7 @@ class Check(IPlugin):
 
     def run(self,msg):
         companies = self.getCompanies(msg)
-        y = yahooAPI()
-        results = y.getComapanyQuote(companies)
+        bm = BolsaMadridSearch()
+        results = bm.getComapanyQuote(companies)
 
         return results

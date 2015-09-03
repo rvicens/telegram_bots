@@ -3,6 +3,8 @@
 import time
 import logging
 import telegram
+
+from config import *
 from lib.TelegramMessageProcessor.TelegramMessageProcessor import *
 
 def processMessage(bot, last_update_id,logger):
@@ -29,7 +31,7 @@ def main(logger):
     LAST_UPDATE_ID = None
 
     # Telegram Bot Authorization Token
-    bot = telegram.Bot('135410251:AAEd26Jua5Z_OpUOyMyzI7Hx_34_Q3q6_s0')
+    bot = telegram.Bot(API_KEY)
 
     # for updates. It starts with the latest update_id if available.
     try:
@@ -38,7 +40,7 @@ def main(logger):
         logger.debug("Last Update ID:{0}".format(str(LAST_UPDATE_ID)))
     except IndexError:
         LAST_UPDATE_ID = None
-        logger.exeption("ERROR retrieving update id")
+        logger.exception("ERROR retrieving update id")
 
     while True:
         messageResult = processMessage(bot, LAST_UPDATE_ID,logger)
