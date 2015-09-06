@@ -1,3 +1,4 @@
+import logging
 from yapsy.IPlugin import IPlugin
 from lib.stockQuotesAPI.bolsaMadridSearch import *
 
@@ -15,8 +16,10 @@ class Check(IPlugin):
         return out
 
     def run(self,msg):
+        logger = logging.getLogger("Main.Check")
+        logger.debug("Running Check plugin")
         companies = self.getCompanies(msg)
         bm = BolsaMadridSearch()
         results = bm.getComapanyQuote(companies)
-
+        logger.debug("Finished Check plugin")
         return results

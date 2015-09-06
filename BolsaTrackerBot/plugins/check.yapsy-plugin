@@ -1,6 +1,6 @@
 [Core]
 Name = Check Plugin
-Module = Check
+Module = check.py
 
 [Documentation]
 Author = rvicens

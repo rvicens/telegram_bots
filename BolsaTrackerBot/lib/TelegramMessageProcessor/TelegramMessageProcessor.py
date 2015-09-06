@@ -8,7 +8,7 @@ class TelegramMessageProcessor():
     def __init__(self):
         self.msg = None
         self.cmd = None
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger("Main.TelegramMessageProcessor")
 
 
     def extractMessage(self, tlg_msg):
@@ -70,4 +70,3 @@ class TelegramMessageProcessor():
                     out_message = pluginInfo.plugin_object.run(msg)
 
         return out_message
-
