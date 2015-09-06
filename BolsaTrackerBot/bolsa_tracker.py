@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import os
 import logging
 import telegram
 
@@ -8,7 +9,14 @@ from config import *
 from lib.TelegramMessageProcessor.TelegramMessageProcessor import *
 
 def processMessage(bot, last_update_id,logger):
-    for update in bot.getUpdates(offset=last_update_id):
+
+    try:
+        bot_updates = bot.getUpdates(offset=last_update_id)
+    except:
+        logger.exception("Raised Exception retrieving bot Updates at 'processMessage'")
+        return None
+
+    for update in bot_updates:
         if last_update_id < update.update_id:
             # chat_id is required to reply any message
             chat_id = update.message.chat_id
@@ -16,13 +24,14 @@ def processMessage(bot, last_update_id,logger):
             mp = TelegramMessageProcessor()
             message = mp.process(update)
 
-            if (message):
+            if message:
                 # Reply the message
                 bot.sendMessage(chat_id=chat_id, text=message)
                 # Returns global offset to get the new updates
                 logger.debug("Finished processing message with ID:{0} and Chat ID:{1}".format(update.update_id,chat_id))
                 return update.update_id
-            logger.debug("Message Seems to be None")
+            else:
+                logger.debug("Message Seems to be None")
 
     return None
 
@@ -51,10 +60,14 @@ def main(logger):
 
 if __name__ == '__main__':
 
+    logs_dir = "logs"
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
+
     log_level = logging.DEBUG
     #logger = logging.basicConfig(level=log_level)
     logger = logging.getLogger(__name__)
-    hdlr = logging.FileHandler('logs/bolsatracker.log')
+    hdlr = logging.FileHandler(logs_dir+'/bolsatracker.log')
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     hdlr.setFormatter(formatter)
     logger.addHandler(hdlr)
