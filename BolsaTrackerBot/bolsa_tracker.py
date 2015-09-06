@@ -53,7 +53,6 @@ def main(logger):
         LAST_UPDATE_ID = None
         logger.exception("ERROR retrieving update id")
 
-
     while True:
         messageResult = processMessage(bot, LAST_UPDATE_ID,logger)
         print messageResult
