@@ -60,7 +60,7 @@ def main(logger):
 
 if __name__ == '__main__':
 
-    logger = logging.getLogger("MainApp")
+    logger = logging.getLogger("Main")
 
 	### change to debug level if desired
 	### logging.DEBUG
