@@ -60,17 +60,28 @@ def main(logger):
 
 if __name__ == '__main__':
 
-    logs_dir = "logs"
-    if not os.path.exists(logs_dir):
-        os.makedirs(logs_dir)
+    logger = logging.getLogger("MainApp")
 
-    log_level = logging.DEBUG
-    #logger = logging.basicConfig(level=log_level)
-    logger = logging.getLogger(__name__)
-    hdlr = logging.FileHandler(logs_dir+'/bolsatracker.log')
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    hdlr.setFormatter(formatter)
-    logger.addHandler(hdlr)
-    logger.setLevel(log_level)
+	### change to debug level if desired
+	### logging.DEBUG
+
+	logger.setLevel(logging.DEBUG)
+
+	MAINDIR = os.getcwd()
+	LOGSDIR = MAINDIR + "/logs"
+
+    if not os.path.exists(LOGSDIR):
+        os.makedirs(LOGSDIR)
+
+	# Create the logging file handler
+	logfile = LOGSDIR + "/bolsatracker.log"
+	fh = logging.FileHandler(logfile)
+
+	formatter = logging.Formatter('%(threadName)s - %(process)d - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	fh.setFormatter(formatter)
+
+	# Add handler to logger object
+	logger.addHandler(fh)
+	logger.info("Bot Started")
 
     main(logger)
