@@ -2,7 +2,7 @@
 
 import time
 import os
-import logging
+
 import telegram
 
 from config import *
@@ -47,7 +47,7 @@ def main(logger):
         logger.debug("Getting Telegram updates")
         LAST_UPDATE_ID = bot.getUpdates()[-1].update_id
         logger.debug("Last Update ID:{0}".format(str(LAST_UPDATE_ID)))
-    except IndexError:
+    except:
         LAST_UPDATE_ID = None
         logger.exception("ERROR retrieving update id")
 
