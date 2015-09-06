@@ -2,7 +2,7 @@
 
 import time
 import os
-
+import logging
 import telegram
 
 from config import *
@@ -62,26 +62,26 @@ if __name__ == '__main__':
 
     logger = logging.getLogger("Main")
 
-	### change to debug level if desired
+    ### change to debug level if desired
 	### logging.DEBUG
 
 	logger.setLevel(logging.DEBUG)
 
-	MAINDIR = os.getcwd()
-	LOGSDIR = MAINDIR + "/logs"
+    MAINDIR = os.getcwd()
+    LOGSDIR = MAINDIR + "/logs"
 
     if not os.path.exists(LOGSDIR):
         os.makedirs(LOGSDIR)
 
-	# Create the logging file handler
-	logfile = LOGSDIR + "/bolsatracker.log"
-	fh = logging.FileHandler(logfile)
+    # Create the logging file handler
+    logfile = LOGSDIR + "/bolsatracker.log"
+    fh = logging.FileHandler(logfile)
 
-	formatter = logging.Formatter('%(threadName)s - %(process)d - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
-	fh.setFormatter(formatter)
+    formatter = logging.Formatter('%(threadName)s - %(process)d - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
 
-	# Add handler to logger object
-	logger.addHandler(fh)
-	logger.info("Bot Started")
+    # Add handler to logger object
+    logger.addHandler(fh)
+    logger.info("Bot Started")
 
     main(logger)
