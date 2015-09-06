@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import logging
+import os
 from yapsy.PluginManager import PluginManager
 
 class TelegramMessageProcessor():
@@ -50,7 +51,11 @@ class TelegramMessageProcessor():
 
         out_message = ""
         pm = PluginManager()
-        pm.setPluginPlaces(["plugins"])
+
+        plugins_dir = []
+        plugins_dir.append(os.getcwd() + os.sep + "plugins")
+
+        pm.setPluginPlaces(plugins_dir)
         pm.collectPlugins()
 
         # Trigger 'some action' from the loaded plugins
