@@ -2,13 +2,15 @@
 
 import time
 import os
-import logging
 import telegram
 
 from config import *
 from lib.TelegramMessageProcessor.TelegramMessageProcessor import *
 
 def processMessage(bot, last_update_id,logger):
+
+    if not last_update_id:
+        return None
 
     try:
         bot_updates = bot.getUpdates(offset=last_update_id)
@@ -51,8 +53,10 @@ def main(logger):
         LAST_UPDATE_ID = None
         logger.exception("ERROR retrieving update id")
 
+
     while True:
         messageResult = processMessage(bot, LAST_UPDATE_ID,logger)
+        print messageResult
         if messageResult:
             LAST_UPDATE_ID = messageResult
         time.sleep(3)
@@ -62,19 +66,19 @@ if __name__ == '__main__':
 
     logger = logging.getLogger("Main")
 
-    ### change to debug level if desired
-	### logging.DEBUG
+    # change to debug level if desired
+    # logging.DEBUG
 
-	logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.DEBUG)
 
-    MAINDIR = os.getcwd()
-    LOGSDIR = MAINDIR + "/logs"
+    main_dir = os.getcwd()
+    logs_dir = main_dir + "/logs"
 
-    if not os.path.exists(LOGSDIR):
-        os.makedirs(LOGSDIR)
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
 
     # Create the logging file handler
-    logfile = LOGSDIR + "/bolsatracker.log"
+    logfile = logs_dir + "/bolsatracker.log"
     fh = logging.FileHandler(logfile)
 
     formatter = logging.Formatter('%(threadName)s - %(process)d - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -85,3 +89,5 @@ if __name__ == '__main__':
     logger.info("Bot Started")
 
     main(logger)
+
+
