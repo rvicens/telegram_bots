@@ -55,7 +55,7 @@ def main(logger):
 
     while True:
         messageResult = processMessage(bot, LAST_UPDATE_ID,logger)
-        print messageResult
+
         if messageResult:
             LAST_UPDATE_ID = messageResult
         time.sleep(3)
