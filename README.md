@@ -1,6 +1,6 @@
 # telegram_bots
 
-Bot to track stock indexes through telegra.
+Bot to track stock indexes through telegram.
 
 # Install
 
