@@ -34,7 +34,7 @@ class Check(IPlugin):
             custom_keyboard = []
             for key in sorted(bm.companies.keys()):
                 custom_keyboard.append(["/check {0}".format(key)])
-            print custom_keyboard
+
             results["replay_markup"] = telegram.ReplyKeyboardMarkup(custom_keyboard)
 
         logger.debug("Finished Check plugin")

@@ -81,8 +81,9 @@ class BolsaMadridSearch():
 
     def getChart(self,company):
         y = yahooAPI()
-        return y.getChart(company)
 
+        #return "http://pcbolsa.com/graficopc.aspx?ISIN=ES0105200002&Plaza=55&Time=18:00:39&Mov=0&Sitio=1&Tool=1"
+        return y.getChart(company)
 
     def validateCompany(self,company):
 
