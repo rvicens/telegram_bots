@@ -49,7 +49,8 @@ class TelegramMessageProcessor():
 
     def execPlugin(self):
 
-        out_message = ""
+        out_message = {"text":"","replay_markup":""}
+
         pm = PluginManager()
 
         plugins_dir = []
@@ -60,13 +61,10 @@ class TelegramMessageProcessor():
 
         # Trigger 'some action' from the loaded plugins
         for pluginInfo in pm.getAllPlugins():
-            if self.cmd == "/help":
-                self.logger.debug("Selected HELP command")
-                out_message += pluginInfo.plugin_object.command + " - " + pluginInfo.plugin_object.description
-            else:
-                if pluginInfo.plugin_object.command == self.cmd:
-                    self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
-                    msg = self.msg.replace(self.cmd,"")
-                    out_message = pluginInfo.plugin_object.run(msg)
+            if pluginInfo.plugin_object.command == self.cmd:
+                self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
+                msg = self.msg.replace(self.cmd,"")
+                out_message = pluginInfo.plugin_object.run(msg)
+                break
 
         return out_message

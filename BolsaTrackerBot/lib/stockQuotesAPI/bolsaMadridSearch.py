@@ -103,7 +103,7 @@ class BolsaMadridSearch():
                 out += "\n\n"
             else:
                 self.logger.info("Company '{0}' does not exist".format(company))
-                out += "Company '{0}' does not exist. Please verify companies with /list \n\n".format(company)
+                out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
 
         return out
 

@@ -1,9 +1,9 @@
 [Core]
-Name = Check Plugin
-Module = check.py
+Name = Help Plugin
+Module = help.py
 
 [Documentation]
 Author = rvicens
 Version = 0.1
 Website = http://lotsofplugins.com
-Description = Check Plugin
+Description = Help Plugin

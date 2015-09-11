@@ -27,8 +27,16 @@ def processMessage(bot, last_update_id,logger):
             message = mp.process(update)
 
             if message:
+
                 # Reply the message
-                bot.sendMessage(chat_id=chat_id, text=message)
+
+                bot.sendMessage(chat_id=chat_id, text=message["text"], reply_markup=message["replay_markup"])
+
+                #if message["replay_markup"]:
+
+                #    reply_markup = telegram.ReplyKeyboardHide()
+                #    bot.sendMessage(chat_id=chat_id, text=None, reply_markup=reply_markup)
+
                 # Returns global offset to get the new updates
                 logger.debug("Finished processing message with ID:{0} and Chat ID:{1}".format(update.update_id,chat_id))
                 return update.update_id
