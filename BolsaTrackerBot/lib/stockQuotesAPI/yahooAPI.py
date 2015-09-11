@@ -13,8 +13,8 @@ class yahooAPI():
         self.chartPath ="/z"
 
         self.companies = {"ABERTIS":"ABE.MC","ABENGOA-A":"ABG.MC","ABENGOA-B":"ABG-P.MC","ACS":"ACS.MC","ACERINOX":"ACX.MC",
-                          "AENA":"AENA.MC","AMADEUS IT":"AMS.MC","BBVA":"BBVA.MC","BANKIA":"BKIA.MC","BANKINTER":"BKT.MC","CAIXABANK":"CABK.MC",
-                          "DIA":"DIA.MC","ENDESA":"ELE.MC","ENAGAS":"ENG.MC","FCC":"FCC.MC","FERROVIAL":"FER.MC","GAMESA":"GAM.MC","GAS NATURAL":"GAS.MC",
+                          "AENA":"AENA.MC","AMADEUS-IT":"AMS.MC","BBVA":"BBVA.MC","BANKIA":"BKIA.MC","BANKINTER":"BKT.MC","CAIXABANK":"CABK.MC",
+                          "DIA":"DIA.MC","ENDESA":"ELE.MC","ENAGAS":"ENG.MC","FCC":"FCC.MC","FERROVIAL":"FER.MC","GAMESA":"GAM.MC","GASNATURAL":"GAS.MC",
                           "GRIFOLS":"GRF.MC","IAG":"IAG.MC","IBERDROLA":"IBE.MC","INDRA":"IDR.MC","INDITEX":"ITX.MC","MAPFRE":"MAP.MC","ACELORMITTAL":"MTS.MC",
                           "OHL":"OHL.MC","POPULAR":"POP.MC","REE":"REE.MC","REPSOL":"REP.MC","B.SABADELL":"SAB.MC","SANTANDER":"SAN.MC","SACYR":"SACYR.MC",
                           "TELEFONICA":"TEF.MC", "MEDIASET":"TL5.MC","TEC. REUNIDAS":"TRE.MC"}
