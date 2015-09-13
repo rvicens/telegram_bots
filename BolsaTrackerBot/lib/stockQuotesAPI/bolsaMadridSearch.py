@@ -39,24 +39,20 @@ class BolsaMadridSearch():
         opening_price = ""
         diff_price = ""
 
-        try:
-            soup = BeautifulSoup(self.page,"html5lib")
+        soup = BeautifulSoup(self.page,"html5lib")
 
-            company = soup.find_all(class_="TituloPag")[0].get_text().encode("utf-8")
-            ticker = soup.find_all(id="ctl00_Contenido_TickerDat")[0].get_text()[:-1].encode("utf-8")
+        company = soup.find_all(class_="TituloPag")[0].get_text().encode("utf-8")
+        ticker = soup.find_all(id="ctl00_Contenido_TickerDat")[0].get_text()[:-1].encode("utf-8")
 
-            tblPrices = soup.find_all(id="ctl00_Contenido_tblPrecios")
-            row = tblPrices[0].find_all("tr")[1]
-            cells = row.find_all("td")
-            last_time = "{0} {1}".format(cells[0].get_text().encode("utf-8"),cells[1].get_text().encode("utf-8"))
-            opening_price = cells[3].get_text().encode("utf-8")
-            diff_price = cells[4].get_text().encode("utf-8")
-            last_price = cells[5].get_text().encode("utf-8")
-            max_price = cells[6].get_text().encode("utf-8")
-            min_price = cells[7].get_text().encode("utf-8")
-
-        except:
-            self.logger.exception("Error parsing BolsaMadrid Website")
+        tblPrices = soup.find_all(id="ctl00_Contenido_tblPrecios")
+        row = tblPrices[0].find_all("tr")[1]
+        cells = row.find_all("td")
+        last_time = "{0} {1}".format(cells[0].get_text().encode("utf-8"),cells[1].get_text().encode("utf-8"))
+        opening_price = cells[3].get_text().encode("utf-8")
+        diff_price = cells[4].get_text().encode("utf-8")
+        last_price = cells[5].get_text().encode("utf-8")
+        max_price = cells[6].get_text().encode("utf-8")
+        min_price = cells[7].get_text().encode("utf-8")
 
         out = [company,ticker,last_price,last_time,min_price,max_price,opening_price,diff_price]
         return out
@@ -74,8 +70,9 @@ class BolsaMadridSearch():
             s = self.parsePage()
             out = "Company Name:{0}\nTicker:{1}\nLast Trade Price:{2}\nTime Reference:{3}\nMin. Price:{4}\nMax. Price:{5}\nOpening Price:{6}\nDifference From Opening:{7}\n".format(s[0],s[1],s[2],s[3],s[4],s[5],s[6],s[7])
         except Exception, e:
-            self.logger.exception("Something went wrong queryin the stock database. Data:{0}".format(r.url))
-            out = "Something went wrong querying the stock database"
+            self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(r.url))
+            self.logger.exception("Error parsing BolsaMadrid Website")
+            out = "Something went wrong querying the stock database. No data for stock values\n\n"
 
         return out
 
