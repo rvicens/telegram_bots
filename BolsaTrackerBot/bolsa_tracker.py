@@ -3,6 +3,7 @@
 import time
 import os
 import telegram
+import logging.handlers
 
 from config import *
 from lib.TelegramMessageProcessor.TelegramMessageProcessor import *
@@ -80,7 +81,9 @@ if __name__ == '__main__':
 
     # Create the logging file handler
     logfile = logs_dir + "/bolsatracker.log"
-    fh = logging.FileHandler(logfile)
+
+    fh = logging.handlers.TimedRotatingFileHandler(logfile, when='H', interval=4, backupCount=24)
+    #fh = logging.FileHandler(logfile)
 
     formatter = logging.Formatter('%(threadName)s - %(process)d - %(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
@@ -90,5 +93,3 @@ if __name__ == '__main__':
     logger.info("Bot Started")
 
     main(logger)
-
-
