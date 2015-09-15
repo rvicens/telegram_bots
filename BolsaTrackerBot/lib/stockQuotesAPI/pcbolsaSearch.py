@@ -74,6 +74,37 @@ class pcbolsaSearch():
 
         return out
 
+     def getChart(self,company):
+
+        chart = ""
+
+        return chart
+
+
+    def validateCompany(self,company):
+
+        if not company.upper() in self.companies.keys():
+            return False
+
+        return True
+
+
+    def getComapanyQuote(self,companies):
+
+        out = ""
+        self.logger.debug("Querying companies:{0}".format(companies))
+        for company in companies:
+            if self.validateCompany(company):
+                self.logger.debug("Company:{0} is validated".format(company))
+                #out += self.getQuote(company)
+                out += self.getChart(company)
+                out += "\n\n"
+            else:
+                self.logger.info("Company '{0}' does not exist".format(company))
+                out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
+
+        return out
+
 if __name__ == '__main__':
 
     pcb = pcbolsaSearch()
