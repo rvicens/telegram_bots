@@ -70,7 +70,7 @@ class BolsaMadridSearch():
             s = self.parsePage()
             out = "Company Name:{0}\nTicker:{1}\nLast Trade Price:{2}\nTime Reference:{3}\nMin. Price:{4}\nMax. Price:{5}\nOpening Price:{6}\nDifference From Opening:{7}\n".format(s[0],s[1],s[2],s[3],s[4],s[5],s[6],s[7])
         except Exception, e:
-            self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(r.url))
+            self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(url))
             self.logger.exception("Error parsing BolsaMadrid Website")
             out = "Something went wrong querying the stock database. No data for stock values\n\n"
 
