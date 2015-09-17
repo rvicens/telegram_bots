@@ -11,6 +11,7 @@ class pcbolsaSearch():
         self.proto = "http://"
         self.host = "pcbolsa.com"
         self.dividend_path = "/ProximosDividendos.aspx"
+        self.chart_path = "/graficosixJpgGranNuevo.aspx"
         self.page = ""
 
         self.companies = {"ABERTIS":"ES0111845014","ABENGOA-A":"","ABENGOA-B":"ES0105200002","ACCIONA":"ES0125220311","ACS":"ES0167050915","ACERINOX":"ES0132105018",
@@ -19,6 +20,13 @@ class pcbolsaSearch():
                           "GRIFOLS":"ES0171996012","IAG":"ES0177542018","IBERDROLA":"ES0144580Y14","INDRA":"ES0118594417","INDITEX":"ES0148396007","MAPFRE":"ES0124244E34","ACELORMITTAL":"LU0323134006",
                           "OHL":"ES0142090317","POPULAR":"ES0113790226","REE":"ES0173093115","REPSOL":"ES0173516115","B.SABADELL":"ES0113860A34","SANTANDER":"ES0113900J37","SACYR":"ES0182870214",
                           "TELEFONICA":"ES0178430E18", "MEDIASET":"ES0152503035","TEC.REUNIDAS":"ES0178165017"}
+
+        self.chart_companies = {"ABERTIS":"","ABENGOA-A":"","ABENGOA-B":"19739492,1058,814","ACCIONA":"","ACS":"","ACERINOX":"",
+                          "AENA":"","AMADEUS-IT":"","BBVA":"","BANKIA":"","BANKINTER":"","CAIXABANK":"",
+                          "DIA":"","ENDESA":"","ENAGAS":"","FCC":"","FERROVIAL":"","GAMESA":"","GASNATURAL":"",
+                          "GRIFOLS":"","IAG":"","IBERDROLA":"","INDRA":"","INDITEX":"","MAPFRE":"","ACELORMITTAL":"",
+                          "OHL":"","POPULAR":"","REE":"","REPSOL":"","B.SABADELL":"","SANTANDER":"","SACYR":"",
+                          "TELEFONICA":"", "MEDIASET":"","TEC.REUNIDAS":""}
 
         self.translate_payment_type = {"a cuenta":"on account"}
 
@@ -69,16 +77,21 @@ class pcbolsaSearch():
             self.page = r.text
             out = self.parseDividendPage()
         except Exception, e:
-            self.logger.exception("Something went wrong querying the dividend database. Data:{0}".format(r.url))
+            self.logger.exception("Something went wrong querying the dividend database. Data:{0}".format(url))
             self.logger.exception("Error parsing pcbolsa Website")
 
         return out
 
-     def getChart(self,company):
 
-        chart = ""
+    def getChart(self,company):
 
-        return chart
+        company_code = ""
+        if self.validateCompany(company):
+            company_code = self.chart_companies[company]
+        query_string = "?Tipo=0&CodigoSix={0}&width=600&height=350".format(company_code)
+        url = "{0}{1}{2}{3}".format(self.proto,self.host,self.chart_path,query_string)
+
+        return url
 
 
     def validateCompany(self,company):
@@ -109,3 +122,4 @@ if __name__ == '__main__':
 
     pcb = pcbolsaSearch()
     print pcb.getDividend()
+    print pcb.getChart("ACCIONA")

@@ -11,7 +11,13 @@ class Check(IPlugin):
 
     def beautify(self,dividend_info):
 
-        return []
+        out = ""
+        for i in dividend_info:
+            out += "Company:{0}\nDate:{1}\nYear:{2}Payment Type:{3}\n".format(i["company"],i["date"],i["year"],i["payment_type"])
+            out += "Gross:{0}\nNet:{1}".format(i["gross"],i["net"])
+            out += "\n\n---\n"
+
+        return out
 
     def run(self):
 
