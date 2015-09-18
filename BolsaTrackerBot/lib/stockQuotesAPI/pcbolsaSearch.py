@@ -12,21 +12,22 @@ class pcbolsaSearch():
         self.host = "pcbolsa.com"
         self.dividend_path = "/ProximosDividendos.aspx"
         self.chart_path = "/graficosixJpgGranNuevo.aspx"
+        self.quote_path = "/Cotizacion"
         self.page = ""
 
-        self.companies = {"ABERTIS":"ES0111845014","ABENGOA-A":"","ABENGOA-B":"ES0105200002","ACCIONA":"ES0125220311","ACS":"ES0167050915","ACERINOX":"ES0132105018",
-                          "AENA":"ES0105046009","AMADEUS-IT":"ES0109067019","BBVA":"ES0113211835","BANKIA":"ES0113307021","BANKINTER":"ES0113679I37","CAIXABANK":"ES0140609019",
-                          "DIA":"ES0126775032","ENDESA":"ES0130670112","ENAGAS":"ES0130960018","FCC":"ES0122060314","FERROVIAL":"ES0118900010","GAMESA":"ES0143416115","GASNATURAL":"ES0116870314",
-                          "GRIFOLS":"ES0171996012","IAG":"ES0177542018","IBERDROLA":"ES0144580Y14","INDRA":"ES0118594417","INDITEX":"ES0148396007","MAPFRE":"ES0124244E34","ACELORMITTAL":"LU0323134006",
-                          "OHL":"ES0142090317","POPULAR":"ES0113790226","REE":"ES0173093115","REPSOL":"ES0173516115","B.SABADELL":"ES0113860A34","SANTANDER":"ES0113900J37","SACYR":"ES0182870214",
-                          "TELEFONICA":"ES0178430E18", "MEDIASET":"ES0152503035","TEC.REUNIDAS":"ES0178165017"}
+        self.companies = {"ABERTIS":"Abertis","ABENGOA-A":"Abengoa_-A-","ABENGOA-B":"Abengoa_-B-","ACCIONA":"Acciona","ACS":"ACS","ACERINOX":"Acerinox",
+                          "AENA":"AENA","AMADEUS-IT":"Amadeus","BBVA":"BBVA","BANKIA":"Bankia","BANKINTER":"Bankinter","CAIXABANK":"Caixabank",
+                          "DIA":"DIA","ENDESA":"Endesa","ENAGAS":"Enagas","FCC":"Fomento_Constr","FERROVIAL":"Ferrovial","GAMESA":"Gamesa","GASNATURAL":"Gas_Natural",
+                          "GRIFOLS":"Grifols_A","IAG":"IAG","IBERDROLA":"Iberdrola","INDRA":"Indra","INDITEX":"Inditex","MAPFRE":"Mapfre","ACELORMITTAL":"ArcelorMittal",
+                          "OHL":"797019,1058,814","POPULAR":"Banco_Popular","REE":"Red_Electrica","REPSOL":"REPSOL","B.SABADELL":"Banco_Sabadell","SANTANDER":"Banco_Santander","SACYR":"Sacyr",
+                          "TELEFONICA":"Telefonica", "MEDIASET":"Mediaset_Espana","TEC.REUNIDAS":"Tecnicas_Reunidas"}
 
-        self.chart_companies = {"ABERTIS":"","ABENGOA-A":"","ABENGOA-B":"19739492,1058,814","ACCIONA":"","ACS":"","ACERINOX":"",
-                          "AENA":"","AMADEUS-IT":"","BBVA":"","BANKIA":"","BANKINTER":"","CAIXABANK":"",
-                          "DIA":"","ENDESA":"","ENAGAS":"","FCC":"","FERROVIAL":"","GAMESA":"","GASNATURAL":"",
-                          "GRIFOLS":"","IAG":"","IBERDROLA":"","INDRA":"","INDITEX":"","MAPFRE":"","ACELORMITTAL":"",
-                          "OHL":"","POPULAR":"","REE":"","REPSOL":"","B.SABADELL":"","SANTANDER":"","SACYR":"",
-                          "TELEFONICA":"", "MEDIASET":"","TEC.REUNIDAS":""}
+        self.chart_companies = {"ABERTIS":"1459044,1058,814","ABENGOA-A":"1268457,1058,814","ABENGOA-B":"19739492,1058,814","ACCIONA":"978954,1058,814","ACS":"1879689,1058,814","ACERINOX":"1876417,1058,814",
+                          "AENA":"26876733,1058,814","AMADEUS-IT":"11249889,1058,814","BBVA":"931474,1058,814","BANKIA":"21227982,1058,814","BANKINTER":"3219022,1058,814","CAIXABANK":"3425733,1058,814",
+                          "DIA":"13086668,1058,814","ENDESA":"682405,1058,814","ENAGAS":"1438368,1058,814","FCC":"1004613,1058,814","FERROVIAL":"1978482,1058,814","GAMESA":"1873546,1058,814","GASNATURAL":"822398,1058,814",
+                          "GRIFOLS":"1905826,1058,814","IAG":"11958148,1058,814","IBERDROLA":"2969533,1058,814","INDRA":"1136946,1058,814","INDITEX":"24956043,1058,814","MAPFRE":"2759010,1058,814","ACELORMITTAL":"3529315,1058,814",
+                          "OHL":"797019,1058,814","POPULAR":"21629548,1058,814","REE":"827065,1058,814","REPSOL":"675467,1058,814","B.SABADELL":"2970161,1058,814","SANTANDER":"817651,1058,814","SACYR":"932537,1058,814",
+                          "TELEFONICA":"826858,1058,814", "MEDIASET":"1881163,1058,814","TEC.REUNIDAS":"2598963,1058,814"}
 
         self.translate_payment_type = {"a cuenta":"on account"}
 
@@ -89,14 +90,59 @@ class pcbolsaSearch():
         if self.validateCompany(company):
             company_code = self.chart_companies[company]
         query_string = "?Tipo=0&CodigoSix={0}&width=600&height=350".format(company_code)
-        url = "{0}{1}{2}{3}".format(self.proto,self.host,self.chart_path,query_string)
+        url = "{0}www.{1}{2}{3}".format(self.proto,self.host,self.chart_path,query_string)
 
         return url
+
+    def parseQuotePage(self):
+
+        ticker = ""
+        last_price = ""
+        last_time = ""
+        min_price = ""
+        max_price = ""
+        opening_price = ""
+        diff_price = ""
+
+        soup = BeautifulSoup(self.page,"html5lib")
+        print self.page
+        #print soup
+
+        ticker = soup.find_all(id="CotizaTicker")[0].get_text()[:-1].encode("utf-8")
+        last_price = soup.find_all(id="CotizaUltimo")[0].get_text()[:-1].encode("utf-8")
+        last_time = soup.find_all(id="CotizaHora")[0].get_text()[:-1].encode("utf-8")
+        min_price = soup.find_all(id="CotizaMin")[0].get_text()[:-1].encode("utf-8")
+        max_price = soup.find_all(id="CotizaMax")[0].get_text()[:-1].encode("utf-8")
+        diff_price = soup.find_all(id="CotizaDif")[0].get_text()[:-1].encode("utf-8")
+
+        out = [ticker,last_price,last_time,min_price,max_price,opening_price,diff_price]
+
+        return out
+
+
+    def getQuote(self,company):
+
+        out = ""
+        company_path = ""
+        if self.validateCompany(company):
+            company_path = self.companies[company]
+        url = "{0}{1}{2}/{3}".format(self.proto,self.host,self.quote_path,company_path)
+
+        try:
+            r = requests.get(url, verify=False, timeout=60 )
+            self.page = r.text.encode("utf-8")
+            s = self.parseQuotePage()
+            out = "Company Name:{0}\nTicker:{1}\nLast Trade Price:{2}\nTime Reference:{3}\nMin. Price:{4}\nMax. Price:{5}\nOpening Price:{6}\nDifference From Opening:{7}\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5],s[6])
+        except Exception, e:
+            self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
+            self.logger.exception("Error parsing pcbolsa Website")
+
+        return out
 
 
     def validateCompany(self,company):
 
-        if not company.upper() in self.companies.keys():
+        if not company.upper() in self.chart_companies.keys():
             return False
 
         return True
@@ -109,7 +155,7 @@ class pcbolsaSearch():
         for company in companies:
             if self.validateCompany(company):
                 self.logger.debug("Company:{0} is validated".format(company))
-                #out += self.getQuote(company)
+                out += self.getQuote(company)
                 out += self.getChart(company)
                 out += "\n\n"
             else:
@@ -121,5 +167,5 @@ class pcbolsaSearch():
 if __name__ == '__main__':
 
     pcb = pcbolsaSearch()
-    print pcb.getDividend()
-    print pcb.getChart("ACCIONA")
+    #print pcb.getDividend()
+    print pcb.getComapanyQuote(["ACCIONA"])

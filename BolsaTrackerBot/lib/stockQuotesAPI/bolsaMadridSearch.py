@@ -1,7 +1,7 @@
 import requests
 import logging
 from bs4 import BeautifulSoup
-from yahooAPI import *
+from lib.stockQuotesAPI.pcbolsaSearch import *
 
 class BolsaMadridSearch():
 
@@ -77,10 +77,12 @@ class BolsaMadridSearch():
         return out
 
     def getChart(self,company):
-        y = yahooAPI()
+        #y = yahooAPI()
 
         #return "http://pcbolsa.com/graficopc.aspx?ISIN=ES0105200002&Plaza=55&Time=18:00:39&Mov=0&Sitio=1&Tool=1"
-        return y.getChart(company)
+        #return y.getChart(company)
+        pcb = pcbolsaSearch()
+        return pcb.getChart([company])
 
     def validateCompany(self,company):
 
