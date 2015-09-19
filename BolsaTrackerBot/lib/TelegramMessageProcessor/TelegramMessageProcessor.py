@@ -59,12 +59,15 @@ class TelegramMessageProcessor():
         pm.setPluginPlaces(plugins_dir)
         pm.collectPlugins()
 
-        # Trigger 'some action' from the loaded plugins
-        for pluginInfo in pm.getAllPlugins():
-            if pluginInfo.plugin_object.command == self.cmd:
-                self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
-                msg = self.msg.replace(self.cmd,"")
-                out_message = pluginInfo.plugin_object.run(msg)
-                break
+        try:
+            # Trigger 'some action' from the loaded plugins
+            for pluginInfo in pm.getAllPlugins():
+                if pluginInfo.plugin_object.command == self.cmd:
+                    self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
+                    msg = self.msg.replace(self.cmd,"")
+                    out_message = pluginInfo.plugin_object.run(msg)
+                    break
+        except:
+            self.logger.exception("Error executing command:{0}".format(self.cmd))
 
         return out_message
