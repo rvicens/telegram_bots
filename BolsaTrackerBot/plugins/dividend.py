@@ -19,7 +19,7 @@ class Check(IPlugin):
 
         return out
 
-    def run(self):
+    def run(self,msg):
 
         results = {"text":"","replay_markup":""}
 
