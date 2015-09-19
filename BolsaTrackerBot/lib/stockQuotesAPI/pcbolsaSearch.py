@@ -105,7 +105,7 @@ class pcbolsaSearch():
         diff_price = ""
 
         soup = BeautifulSoup(self.page,"html5lib")
-        print self.page
+        #print self.page
         #print soup
 
         ticker = soup.find_all(id="CotizaTicker")[0].get_text()[:-1].encode("utf-8")
@@ -123,9 +123,7 @@ class pcbolsaSearch():
     def getQuote(self,company):
 
         out = ""
-        company_path = ""
-        if self.validateCompany(company):
-            company_path = self.companies[company]
+        company_path = self.companies[company]
         url = "{0}{1}{2}/{3}".format(self.proto,self.host,self.quote_path,company_path)
 
         try:
