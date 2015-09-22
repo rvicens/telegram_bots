@@ -1,7 +1,7 @@
 import logging
 import telegram
 from yapsy.IPlugin import IPlugin
-from lib.stockQuotesAPI.bolsaMadridSearch import *
+from lib.stockQuotesAPI.ecobolsaSearch import *
 
 class Check(IPlugin):
 
@@ -14,7 +14,7 @@ class Check(IPlugin):
         msgs = msg.split(",")
         for item in msgs:
             if item:
-                out.append(item.replace(" ",""))
+                out.append(item.replace(" ","").upper())
         return out
 
     def run(self,msg):
@@ -24,15 +24,15 @@ class Check(IPlugin):
         logger = logging.getLogger("Main.Check")
         logger.debug("Running Check plugin")
         companies = self.getCompanies(msg)
-        bm = BolsaMadridSearch()
+        ecob = ecobolsaSearch()
 
         if len(companies) > 0:
-            results["text"] = bm.getComapanyQuote(companies)
+            results["text"] = ecob.getComapanyQuote(companies)
             results["replay_markup"] = None
         else:
             results["text"] = "Try the following companies typing:\n\n"
             custom_keyboard = []
-            for key in sorted(bm.companies.keys()):
+            for key in sorted(ecob.companies.keys()):
                 custom_keyboard.append(["/check {0}".format(key)])
 
             results["replay_markup"] = telegram.ReplyKeyboardMarkup(custom_keyboard)
