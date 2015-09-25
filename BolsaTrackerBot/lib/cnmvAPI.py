@@ -55,16 +55,15 @@ class cnmvAPI():
 
         payload = { 'division': '1', 'nif': nif }
 
-        if True:
-        #try:
+        try:
             r = requests.get(url, verify=False, timeout=60, params=payload)
             self.page = r.text
             s = self.parsePage()
             out = str(s)
-        #except Exception, e:
-        #    self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(url))
-        #    self.logger.exception("Error parsing CNMV Website")
-        #    out = "Something went wrong querying the HR webpage\n\n"
+        except Exception, e:
+            self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(url))
+            self.logger.exception("Error parsing CNMV Website")
+            out = "Something went wrong querying the HR webpage\n\n"
 
         return out
 
