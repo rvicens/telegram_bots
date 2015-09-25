@@ -124,7 +124,7 @@ class ecobolsaSearch():
             r = self.reqHndlr.get(url, verify=False, timeout=60 )
             self.page = r.json()
             s = self.parseQuoteJSON()
-            out = "Company Name:{0}\nLast Trade Price:{1}\nTime Reference:{2}\nMin. Price:{3}\nMax. Price:{4}\nOpening Price:{5}\nDifference From Opening:{6}\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5])
+            out = "Company Name:{0}\nLast Trade Price:{1}\nTime Reference:{2}\nMin. Price:{3}\nMax. Price:{4}\nOpening Price:{5}\nDifference From Opening:{6}%\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5])
         except Exception:
             self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
             self.logger.exception("Error parsing pcbolsa Website")
