@@ -37,13 +37,14 @@ class cnmvAPI():
         for row in rows:
             cells = row.find_all("td")
             if len(cells) > 0:
-                hr_date = cells[0].get_text().encode("utf-8")
-                hr_type = cells[1].get_text().encode("utf-8")
-                hr_desc = cells[2].get_text().encode("utf-8")
-                print "-{0}-".format(hr_date)
-                print "-{0}-".format(hr_type)
-                print "-{0}-".format(hr_desc)
-                break
+                date_items = cells[0].find_all("li")
+                hr_date = ""
+                if len(date_items) > 0:
+                    hr_date = "{0} {1}".format(date_items[1].get_text().strip(),date_items[2].get_text().strip())
+
+                hr_type = cells[1].get_text().encode("utf-8").strip() #lstrip().rstrip()
+                hr_desc = cells[2].get_text().encode("utf-8").strip() #lstrip().rstrip()
+                print "-{0}-{1}-{2}".format(hr_date,hr_type,hr_desc)
 
         return out
 
