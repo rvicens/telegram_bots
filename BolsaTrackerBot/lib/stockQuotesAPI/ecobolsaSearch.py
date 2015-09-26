@@ -183,6 +183,3 @@ if __name__ == '__main__':
 
     ecob = ecobolsaSearch()
     print ecob.getComapanyQuote(["ACCIONA"])
-    #a = ecob.getAllQuotes()
-    #for x in a:
-    #        print x["np"]

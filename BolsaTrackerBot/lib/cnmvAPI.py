@@ -13,12 +13,8 @@ class cnmvAPI():
         self.path = "/Portal/HR/ResultadoBusquedaHR.aspx"
         self.page = ""
 
-        self.companies = {"ABERTIS":"A-48010615","ABENGOA-A":"","ABENGOA-B":"ES0105200002","ACCIONA":"ES0125220311","ACS":"ES0167050915","ACERINOX":"ES0132105018",
-                          "AENA":"ES0105046009","AMADEUS-IT":"ES0109067019","BBVA":"ES0113211835","BANKIA":"ES0113307021","BANKINTER":"ES0113679I37","CAIXABANK":"ES0140609019",
-                          "DIA":"ES0126775032","ENDESA":"ES0130670112","ENAGAS":"ES0130960018","FCC":"ES0122060314","FERROVIAL":"ES0118900010","GAMESA":"ES0143416115","GASNATURAL":"ES0116870314",
-                          "GRIFOLS":"ES0171996012","IAG":"ES0177542018","IBERDROLA":"ES0144580Y14","INDRA":"ES0118594417","INDITEX":"ES0148396007","MAPFRE":"ES0124244E34","ACELORMITTAL":"LU0323134006",
-                          "OHL":"ES0142090317","POPULAR":"ES0113790226","REE":"ES0173093115","REPSOL":"ES0173516115","B.SABADELL":"ES0113860A34","SANTANDER":"ES0113900J37","SACYR":"ES0182870214",
-                          "TELEFONICA":"ES0178430E18", "MEDIASET":"ES0152503035","TEC.REUNIDAS":"ES0178165017"}
+        self.companies = {"ABERTIS":"A-08209769","ABENGOA-A":"A41002288","ABENGOA-B":"A41002288","ACCIONA":"A08001851","ACS":"A-28004885","ACERINOX":"A-28250777","AENA":"A86212420","AMADEUS-IT":"A-78876919","BBVA":"A-48265169","BANKIA":"A-14010342","BANKINTER":"A28157360","CAIXABANK":"A-08663619","DIA":"A28164754","ENDESA":"A-28023430","ENAGAS":"A-28294726","FCC":"A-28037224","FERROVIAL":"A81939209","GAMESA":"A-01011253","GASNATURAL":"A-08015497","GRIFOLS":"A-58389123","IAG":"A-28017648","IBERDROLA":"A-48010615","INDRA":"A-28599033","INDITEX":"A-15075062","MAPFRE":"A08055741","ACELORMITTAL":"N0181056C","OHL":"A-48010573","POPULAR":"A-28000727","REE":"A-78003662","REPSOL":"A-78374725","B.SABADELL":"A-08000143", "SANTANDER":"A-39000013","SACYR":"A-28013811","TELEFONICA":"A-28015865", "MEDIASET":"A-79075438","TEC.REUNIDAS":"A-28092583"}
+
 
     def setNif(self,company):
         out_id = company.upper()
@@ -37,14 +33,23 @@ class cnmvAPI():
         for row in rows:
             cells = row.find_all("td")
             if len(cells) > 0:
-                date_items = cells[0].find_all("li")
+                if len(cells) > 3:
+                    pos0 = 0
+                    pos1 = 2
+                    pos2 = 3
+                else:
+                    pos0 = 0
+                    pos1 = 1
+                    pos2 = 2
+
+                date_items = cells[pos0].find_all("li")
                 hr_date = ""
                 if len(date_items) > 0:
                     hr_date = "{0} {1}".format(date_items[1].get_text().strip(),date_items[2].get_text().strip())
 
-                hr_type = cells[1].get_text().encode("utf-8").strip() #lstrip().rstrip()
-                hr_desc = cells[2].get_text().encode("utf-8").strip() #lstrip().rstrip()
-                print "-{0}-{1}-{2}".format(hr_date,hr_type,hr_desc)
+                hr_type = cells[pos1].get_text().encode("utf-8").strip()
+                hr_desc = cells[pos2].get_text().encode("utf-8").strip()
+                out += "Date: {0} - Type: {1}\n{2}\n\n".format(hr_date,hr_type,hr_desc)
 
         return out
 
