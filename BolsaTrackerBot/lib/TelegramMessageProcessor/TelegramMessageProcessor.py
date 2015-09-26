@@ -52,7 +52,6 @@ class TelegramMessageProcessor():
         out_message = {"text":"","replay_markup":""}
 
         pm = PluginManager()
-
         plugins_dir = []
         plugins_dir.append(os.getcwd() + os.sep + "plugins")
 

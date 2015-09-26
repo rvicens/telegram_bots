@@ -27,7 +27,7 @@ def processMessage(bot, last_update_id,logger):
             mp = TelegramMessageProcessor()
             message = mp.process(update)
 
-            if message:
+            if message["text"] or message["replay_markup"]:
 
                 # Reply the message
                 bot.sendMessage(chat_id=chat_id, text=message["text"], reply_markup=message["replay_markup"])
