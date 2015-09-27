@@ -23,6 +23,14 @@ class cnmvAPI():
         return out_id
 
 
+    def setPositions(self,cells):
+        pos0 = 0
+        pos1 = len(cells) - 2
+        pos2 = len(cells) - 1
+
+        return pos0, pos1, pos2
+
+
     def parsePage(self):
 
         out = ""
@@ -33,14 +41,8 @@ class cnmvAPI():
         for row in rows:
             cells = row.find_all("td")
             if len(cells) > 0:
-                if len(cells) > 3:
-                    pos0 = 0
-                    pos1 = 2
-                    pos2 = 3
-                else:
-                    pos0 = 0
-                    pos1 = 1
-                    pos2 = 2
+
+                pos0, pos1, pos2 = self.setPositions(cells)
 
                 date_items = cells[pos0].find_all("li")
                 hr_date = ""
