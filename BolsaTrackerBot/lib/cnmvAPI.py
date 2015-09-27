@@ -51,7 +51,7 @@ class cnmvAPI():
 
                 hr_type = cells[pos1].get_text().encode("utf-8").strip()
                 hr_desc = cells[pos2].get_text().encode("utf-8").strip()
-                out += "Date: {0} - Type: {1}\n{2}\n\n".format(hr_date,hr_type,hr_desc)
+                out += "Date: {0}\nType: {1}\n{2}\n\n".format(hr_date,hr_type,hr_desc)
 
         return out
 
