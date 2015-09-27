@@ -9,7 +9,6 @@ class Check(IPlugin):
     command = "/hr"
     description = "Plugin to check 'Hechos Relevantes'. e.g. /hr"
 
-
     def getCompanies(self,msg):
         out = []
         msgs = msg.split(",")
@@ -33,7 +32,7 @@ class Check(IPlugin):
         else:
             results["text"] = "Try the following companies typing:\n\n"
             custom_keyboard = []
-            for key in sorted(ecob.companies.keys()):
+            for key in sorted(cnmv.companies.keys()):
                 custom_keyboard.append(["/hr {0}".format(key)])
 
             results["replay_markup"] = telegram.ReplyKeyboardMarkup(custom_keyboard)
