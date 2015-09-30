@@ -49,7 +49,7 @@ class TelegramMessageProcessor():
 
     def execPlugin(self):
 
-        out_message = {"text":"","replay_markup":""}
+        out_message = {"text":"","replay_markup":"","photo":""}
 
         pm = PluginManager()
         plugins_dir = []
@@ -63,7 +63,7 @@ class TelegramMessageProcessor():
             for pluginInfo in pm.getAllPlugins():
                 if pluginInfo.plugin_object.command == self.cmd:
                     self.logger.debug("Running '{0}' plugin".format(pluginInfo.plugin_object.name))
-                    msg = self.msg.replace(self.cmd,"")
+                    msg = self.msg.replace(self.cmd+" ","")
                     out_message = pluginInfo.plugin_object.run(msg)
                     break
         except:

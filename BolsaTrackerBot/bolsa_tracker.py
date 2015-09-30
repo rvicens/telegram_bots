@@ -32,6 +32,10 @@ def processMessage(bot, last_update_id,logger):
                 # Reply the message
                 bot.sendMessage(chat_id=chat_id, text=message["text"], reply_markup=message["replay_markup"])
 
+                if message.has_key("photo"):
+                    if message["photo"]:
+                         bot.sendPhoto(chat_id=chat_id, photo=message["photo"])
+
                 # Returns global offset to get the new updates
                 logger.debug("Finished processing message with ID:{0} and Chat ID:{1}".format(update.update_id,chat_id))
                 return update.update_id

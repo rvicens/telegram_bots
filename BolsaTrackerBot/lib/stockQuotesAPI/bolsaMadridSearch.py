@@ -59,30 +59,41 @@ class BolsaMadridSearch():
 
 
     def getQuote(self,company):
-        isin = self.setId(company)
-        url = "{0}{1}{2}".format(self.proto,self.host,self.path)
 
-        payload = {'ISIN':isin }
+        out = ""
+        if self.validateCompany(company):
+            isin = self.setId(company)
+            url = "{0}{1}{2}".format(self.proto,self.host,self.path)
 
-        try:
-            r = requests.get(url, verify=False, timeout=60, params=payload)
-            self.page = r.text
-            s = self.parsePage()
-            out = "Company Name:{0}\nTicker:{1}\nLast Trade Price:{2}\nTime Reference:{3}\nMin. Price:{4}\nMax. Price:{5}\nOpening Price:{6}\nDifference From Opening:{7}%\n".format(s[0],s[1],s[2],s[3],s[4],s[5],s[6],s[7])
-        except Exception, e:
-            self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(url))
-            self.logger.exception("Error parsing BolsaMadrid Website")
-            out = "Something went wrong querying the stock database. No data for stock values\n\n"
+            payload = {'ISIN':isin }
 
+            try:
+                r = requests.get(url, verify=False, timeout=60, params=payload)
+                self.page = r.text
+                s = self.parsePage()
+                out = "Company Name: {0}\nTicker: {1}\nLast Trade Price: {2}\nTime Reference: {3}\nMin. Price: {4}\nMax. Price: {5}\nOpening Price: {6}\nDifference From Opening: {7}%\n".format(s[0],s[1],s[2],s[3],s[4],s[5],s[6],s[7])
+            except Exception, e:
+                self.logger.exception("Something went wrong querying the stock database. Data:{0}".format(url))
+                self.logger.exception("Error parsing BolsaMadrid Website")
+                out = "Something went wrong querying the stock database. No data for stock values\n\n"
+
+            return out
+
+        self.logger.info("Company '{0}' does not exist".format(company))
+        out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
         return out
 
     def getChart(self,company):
-        #y = yahooAPI()
-        #return "http://pcbolsa.com/graficopc.aspx?ISIN=ES0105200002&Plaza=55&Time=18:00:39&Mov=0&Sitio=1&Tool=1"
-        #return y.getChart(company)
+        if self.validateCompany(company):
+            #y = yahooAPI()
+            #return "http://pcbolsa.com/graficopc.aspx?ISIN=ES0105200002&Plaza=55&Time=18:00:39&Mov=0&Sitio=1&Tool=1"
+            #return y.getChart(company)
+            pcb = pcbolsaSearch()
+            return pcb.getChart(company)
 
-        pcb = pcbolsaSearch()
-        return pcb.getChart(company)
+        self.logger.info("Company '{0}' does not exist".format(company))
+        return None
+
 
     def validateCompany(self,company):
 
@@ -91,24 +102,9 @@ class BolsaMadridSearch():
 
         return True
 
-    def getComapanyQuote(self,companies):
-
-        out = ""
-        self.logger.debug("Querying companies:{0}".format(companies))
-        for company in companies:
-            if self.validateCompany(company):
-                self.logger.debug("Company:{0} is validated".format(company))
-                out += self.getQuote(company)
-                out += self.getChart(company)
-                out += "\n\n"
-            else:
-                self.logger.info("Company '{0}' does not exist".format(company))
-                out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
-
-        return out
 
 if __name__ == '__main__':
 
-    companies = ["abertis"]
+    companies = "abertis"
     bm = BolsaMadridSearch()
-    print bm.getComapanyQuote(companies)
+    print bm.getQuote(companies)

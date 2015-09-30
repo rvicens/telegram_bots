@@ -49,6 +49,14 @@ class ecobolsaSearch():
         self.reqHndlr.cookies.load(ignore_discard=True)
 
 
+    def validateCompany(self,company):
+
+        if not company.upper() in self.companies.keys():
+            return False
+
+        return True
+
+
     def testLoggedIn(self):
 
         logged_out_strings = ["/registro/coteja.php","usuarioregistro","passregistro"]
@@ -117,20 +125,24 @@ class ecobolsaSearch():
     def getQuote(self,company):
 
         out = ""
-        timestamp = int(time.time())
-        company_path = "js/data/{0}.json?{1}".format(self.companies[company].upper(),timestamp)
-        url = "{0}{1}/{2}".format(self.proto,self.loggedin_host,company_path)
-        try:
-            r = self.reqHndlr.get(url, verify=False, timeout=60 )
-            self.page = r.json()
-            s = self.parseQuoteJSON()
-            out = "Company Name:{0}\nLast Trade Price:{1}\nTime Reference:{2}\nMin. Price:{3}\nMax. Price:{4}\nOpening Price:{5}\nDifference From Opening:{6}%\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5])
-        except Exception:
-            self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
-            self.logger.exception("Error parsing pcbolsa Website")
+        if self.validateCompany(company):
+            timestamp = int(time.time())
+            company_path = "js/data/{0}.json?{1}".format(self.companies[company].upper(),timestamp)
+            url = "{0}{1}/{2}".format(self.proto,self.loggedin_host,company_path)
+            try:
+                r = self.reqHndlr.get(url, verify=False, timeout=60 )
+                self.page = r.json()
+                s = self.parseQuoteJSON()
+                out = "Company Name: {0}\nLast Trade Price: {1}\nTime Reference: {2}\nMin. Price: {3}\nMax. Price: {4}\nOpening Price: {5}\nDifference From Opening: {6}%\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5])
+            except Exception:
+                self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
+                self.logger.exception("Error parsing pcbolsa Website")
 
+            return out
+
+        self.logger.info("Company '{0}' does not exist".format(company))
+        out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
         return out
-
 
     def getAllQuotes(self):
 
@@ -148,38 +160,18 @@ class ecobolsaSearch():
 
         return out
 
+
     def getChart(self,company):
-        pcb = pcbolsaSearch()
-        return pcb.getChart(company)
 
+        if self.validateCompany(company):
+            pcb = pcbolsaSearch()
+            return pcb.getChart(company)
 
-    def validateCompany(self,company):
-
-        if not company.upper() in self.companies.keys():
-            return False
-
-        return True
-
-
-    def getComapanyQuote(self,companies):
-
-        out = ""
-        # self.doLogin()
-        self.logger.debug("Querying companies:{0}".format(companies))
-        for company in companies:
-            if self.validateCompany(company):
-                self.logger.debug("Company:{0} is validated".format(company))
-                out += self.getQuote(company)
-                out += self.getChart(company)
-                out += "\n\n"
-            else:
-                self.logger.info("Company '{0}' does not exist".format(company))
-                out += "Company '{0}' does not exist. Please verify company list \n\n".format(company)
-
-        return out
+        self.logger.info("Company '{0}' does not exist".format(company))
+        return None
 
 
 if __name__ == '__main__':
 
     ecob = ecobolsaSearch()
-    print ecob.getComapanyQuote(["ACCIONA"])
+    print ecob.getQuote("ACCIONA")

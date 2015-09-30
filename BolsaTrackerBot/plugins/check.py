@@ -9,26 +9,19 @@ class Check(IPlugin):
     command = "/check"
     description = "Plugin to check quotes. e.g. /check INDITEX"
 
-    def getCompanies(self,msg):
-        out = []
-        msgs = msg.split(",")
-        for item in msgs:
-            if item:
-                out.append(item.replace(" ","").upper())
-        return out
-
     def run(self,msg):
 
-        results = {"text":"","replay_markup":""}
+        results = {"text":"","replay_markup":"","photo":""}
 
         logger = logging.getLogger("Main.Check")
         logger.debug("Running Check plugin")
-        companies = self.getCompanies(msg)
+        company = msg
         ecob = ecobolsaSearch()
 
-        if len(companies) > 0:
-            results["text"] = ecob.getComapanyQuote(companies)
+        if len(company) > 0:
+            results["text"] = ecob.getQuote(company)
             results["replay_markup"] = None
+            results["photo"] = ecob.getChart(company)
         else:
             results["text"] = "Try the following companies typing:\n\n"
             custom_keyboard = []
