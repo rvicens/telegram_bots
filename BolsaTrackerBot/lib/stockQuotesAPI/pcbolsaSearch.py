@@ -27,7 +27,7 @@ class pcbolsaSearch():
                           "DIA":"13086668,1058,814","ENDESA":"682405,1058,814","ENAGAS":"1438368,1058,814","FCC":"1004613,1058,814","FERROVIAL":"1978482,1058,814","GAMESA":"1873546,1058,814","GASNATURAL":"822398,1058,814",
                           "GRIFOLS":"1905826,1058,814","IAG":"11958148,1058,814","IBERDROLA":"2969533,1058,814","INDRA":"1136946,1058,814","INDITEX":"24956043,1058,814","MAPFRE":"2759010,1058,814","ACELORMITTAL":"3529315,1058,814",
                           "OHL":"797019,1058,814","POPULAR":"21629548,1058,814","REE":"827065,1058,814","REPSOL":"675467,1058,814","B.SABADELL":"2970161,1058,814","SANTANDER":"817651,1058,814","SACYR":"932537,1058,814",
-                          "TELEFONICA":"826858,1058,814", "MEDIASET":"1881163,1058,814","TEC.REUNIDAS":"2598963,1058,814"}
+                          "TELEFONICA":"826858,1058,814", "MEDIASET":"1881163,1058,814","TEC.REUNIDAS":"2598963,1058,814","MERLIN":"24705819,1058,814"}
 
         self.translate_payment_type = {"a cuenta":"on account"}
 
@@ -84,12 +84,17 @@ class pcbolsaSearch():
         return out
 
 
-    def getChart(self,company):
+    def getChart(self,company,chart_time="now"):
 
         company_code = ""
         if self.validateCompany(company):
             company_code = self.chart_companies[company]
-        query_string = "?Tipo=0&CodigoSix={0}&width=600&height=350".format(company_code)
+
+        if chart_time == "now":
+            query_string = "?Tipo=0&CodigoSix={0}&width=600&height=350".format(company_code)
+        if chart_time == "6m":
+            query_string = "?Tipo=2&CodigoSix={0}&width=600&height=350".format(company_code)
+
         url = "{0}www.{1}{2}{3}".format(self.proto,self.host,self.chart_path,query_string)
 
         return url

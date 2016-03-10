@@ -27,7 +27,7 @@ class ecobolsaSearch():
                           "DIA":"SUPERMERCADOS-DIA","ENDESA":"ENDESA","ENAGAS":"ENAGAS","FCC":"FOMENTO-DE-CONSTRUCCIONES-Y-CONTRATAS-FCC","FERROVIAL":"FERROVIAL","GAMESA":"GAMESA","GASNATURAL":"GAS-NATURAL",
                           "GRIFOLS":"GRIFOLS","IAG":"IAG-(IBERIA)","IBERDROLA":"IBERDROLA","INDRA":"INDRA","INDITEX":"INDITEX","MAPFRE":"MAPFRE","ACELORMITTAL":"ARCELOR-MITTAL",
                           "OHL":"OBRASCON-HUARTE-LAIN-OHL","POPULAR":"BANCO-POPULAR","REE":"RED-ELECTRICA-DE-ESPANA-REE","REPSOL":"REPSOL","B.SABADELL":"BANCO-SABADELL","SANTANDER":"BANCO-SANTANDER","SACYR":"SACYR",
-                          "TELEFONICA":"TELEFONICA", "MEDIASET":"MEDIASET-ESPANA","TEC.REUNIDAS":"TECNICAS-REUNIDAS"}
+                          "TELEFONICA":"TELEFONICA", "MEDIASET":"MEDIASET-ESPANA","TEC.REUNIDAS":"TECNICAS-REUNIDAS","MERLIN":"MERLIN-PROPERTIES"}
 
         if not os.path.isdir('tmp'):
             os.mkdir("tmp")
@@ -136,7 +136,7 @@ class ecobolsaSearch():
                 out = "Company Name: {0}\nLast Trade Price: {1}\nTime Reference: {2}\nMin. Price: {3}\nMax. Price: {4}\nOpening Price: {5}\nDifference From Opening: {6}%\n".format(company,s[0],s[1],s[2],s[3],s[4],s[5])
             except Exception:
                 self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
-                self.logger.exception("Error parsing pcbolsa Website")
+                self.logger.exception("Error parsing ecobolsa Website")
 
             return out
 
@@ -156,7 +156,7 @@ class ecobolsaSearch():
             out = self.page
         except Exception:
             self.logger.exception("Something went wrong querying the quote database. Data:{0}".format(url))
-            self.logger.exception("Error parsing pcbolsa Website")
+            self.logger.exception("Error parsing ecobolsa Website")
 
         return out
 
@@ -174,4 +174,4 @@ class ecobolsaSearch():
 if __name__ == '__main__':
 
     ecob = ecobolsaSearch()
-    print ecob.getQuote("ACCIONA")
+    print ecob.getQuote("MERLIN")
