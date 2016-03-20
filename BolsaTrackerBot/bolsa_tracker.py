@@ -32,16 +32,23 @@ def processMessage(bot, last_update_id,logger):
 
             if message["text"] or message["replay_markup"]:
 
-                # Reply the message
-                bot.sendMessage(chat_id=chat_id, text=message["text"], reply_markup=message["replay_markup"])
+                try:
+                    # Reply the message
+                    bot.sendMessage(chat_id=chat_id, text=message["text"], reply_markup=message["replay_markup"])
 
-                if message.has_key("photo"):
-                    if message["photo"]:
-                         bot.sendPhoto(chat_id=chat_id, photo=message["photo"])
+                    if message.has_key("photo"):
+                        if message["photo"]:
+                             bot.sendPhoto(chat_id=chat_id, photo=message["photo"])
 
-                # Returns global offset to get the new updates
-                logger.debug("Finished processing message with ID:{0} and Chat ID:{1}".format(update.update_id,chat_id))
-                return update.update_id
+                    # Returns global offset to get the new updates
+                    logger.debug("Finished processing message with ID:{0} and Chat ID:{1}".format(update.update_id,chat_id))
+                    return update.update_id
+                except:
+                    if message.has_key("photo"):
+                        logger.exeption("Error sending message: chat_id={0} | text={1} | reply_markup={2} | photo={3}".format(chat_id,message["text"],message["replay_markup"],message["photo"]))
+                    else:
+                        logger.exeption("Error sending message: chat_id={0} | text={1} | reply_markup={2}".format(chat_id,message["text"],message["replay_markup"]))
+                    return None
             else:
                 logger.debug("Message Seems to be None")
 
