@@ -28,6 +28,7 @@ var/
 pip-log.txt
 pip-delete-this-directory.txt
 nohup.out
+logs/*
 
 # Config file for telegram bots
 config.py
